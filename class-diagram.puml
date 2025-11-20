@@ -1,0 +1,202 @@
+@startuml deaninfsys
+!theme plain
+
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor Black
+}
+
+skinparam package {
+    BackgroundColor LightGray
+    BorderColor DarkGray
+}
+
+package "People Hierarchy" {
+  class Person {
+    {field} - firstName : string
+    {field} - lastName : string
+    {field} - middleName : string
+    __
+    {method} + getFirstName() : string
+    {method} + setFirstName(string) : void
+    {method} + getLastName() : string
+    {method} + setLastName(string) : void
+    {method} + getMiddleName() : string
+    {method} + setMiddleName(string) : void
+  }
+
+  class Employee {
+    {field} - position : string
+    __
+    {method} + getPosition() : string
+    {method} + setPosition(string) : void
+  }
+
+  class Student {
+    {field} - groupNumber : char[7]
+    {field} - studentId : int
+    __
+    {method} + getGroupNumber() : string
+    {method} + setGroupNumber(string) : void
+  }
+}
+
+Person <|-- Employee
+Person <|-- Student
+
+package "Employees" {
+  class Teacher {
+    {field} - teacherId : int
+    __
+    {method} + getTeacherId() : int
+    {method} + setTeacherId(int) : void
+  }
+
+  class DeaneryStaff {
+  }
+}
+
+Employee <|-- Teacher
+Employee <|-- DeaneryStaff
+
+package "Events Hierarchy" {
+  class AcademicEvent {
+    {field} - name : string
+    {field} - description : string
+    {field} - startTime : EventTime*
+    {field} - endTime : EventTime*
+    __
+    {method} + getName() : string
+    {method} + getDescription() : string
+    {method} + getStartTime() : EventTime*
+    {method} + getEndTime() : EventTime*
+    {method} + setName(string) : void
+    {method} + setDescription(string) : void
+    {method} + setStartTime(EventTime*) : void
+    {method} + setEndTime(EventTime*) : void
+  }
+
+  class Lesson {
+    {field} - groups : list<Group*>
+    {field} - teachers : list<Teacher*>
+    {field} - classroom : Classroom*
+    {field} - subject : string
+    __
+    {method} + getGroups() : list<Group*>
+    {method} + getTeachers() : list<Teacher*>
+    {method} + getClassroom() : Classroom*
+    {method} + getSubject() : string
+    {method} + setClassroom(Classroom*) : void
+    {method} + setSubject(string) : void
+  }
+
+  class CampusEvent {
+    {field} - participants : list<Person*>
+    {field} - classroom : Classroom*
+    __
+    {method} + getParticipants() : list<Person*>
+    {method} + getClassroom() : Classroom*
+    {method} + setClassroom(Classroom*) : void
+    {method} + addParticipant(Person*) : void
+    {method} + removeParticipant(Person*) : void
+  }
+}
+
+AcademicEvent <|-- Lesson
+AcademicEvent <|-- CampusEvent
+
+package "Grades Hierarchy" {
+  class Grade {
+    {field} - studentId : int
+    {field} - grade : int
+    {field} - classTime : EventTime*
+    {field} - subject : string
+    __
+    {method} + getStudentId() : int
+    {method} + getGrade() : int
+    {method} + getEventTime() : EventTime*
+    {method} + getSubject() : string
+    {method} + setStudentId(int) : void
+    {method} + setGrade(int) : void
+    {method} + setEventTime(EventTime*) : void
+    {method} + setSubject(string) : void
+  }
+
+  class ExamGrade {
+    {field} - retakeCount : int
+    __
+    {method} + getRetakeCount() : int
+    {method} + setRetakeCount(int) : void
+  }
+
+  class PassFailGrade {
+    {field} - passed : bool
+    __
+    {method} + isPassed() : bool
+    {method} + setPassed(bool) : void
+  }
+}
+
+Grade <|-- ExamGrade
+ExamGrade <|-- PassFailGrade
+
+package "Support Classes" {
+  class EventTime {
+    {field} - hours : chrono::hours
+    {field} - minutes : chrono::minutes
+    __
+    {method} + getHours() : int
+    {method} + getMinutes() : int
+    {method} + setTime(int, int) : void
+  }
+
+  class Classroom {
+    {field} - roomNumber : string
+    {field} - roomType : string
+    __
+    {method} + getRoomNumber() : string
+    {method} + getRoomType() : string
+    {method} + setRoomNumber(string) : void
+    {method} + setRoomType(string) : void
+    {method} + toString() : string
+  }
+
+  class Group {
+    {field} - students : list<Student*>
+    {field} - groupNumber : string
+    {field} - facultyId : int
+    {field} - specialty : string
+    __
+    {method} + getGroupNumber() : string
+    {method} + getFacultyId() : int
+    {method} + getSpecialty() : string
+    {method} + getStudents() : list<Student*>
+    {method} + setGroupNumber(string) : void
+    {method} + setFacultyId(int) : void
+    {method} + setSpecialty(string) : void
+  }
+
+  class Schedule {
+    {field} - schedule : list<AcademicEvent*>[4][6]
+    __
+    {method} + addLesson(int, int, AcademicEvent*) : void
+    {method} + removeLesson(int, int, AcademicEvent*) : void
+    {method} + getLessons(int, int) : list<AcademicEvent*>
+    {method} + clearDay(int, int) : void
+    {method} + hasLessons(int, int) : bool
+  }
+}
+
+' Агрегации и композиции
+Group o-- Student
+Lesson o-- Group
+Lesson o-- Teacher
+CampusEvent o-- Person
+AcademicEvent *-- EventTime
+Lesson *-- Classroom
+CampusEvent *-- Classroom
+Grade *-- EventTime
+Schedule *-- AcademicEvent
+
+@enduml
