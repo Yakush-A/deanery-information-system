@@ -1,21 +1,36 @@
 #ifndef SCHEDULE_H
 #define SCHEDULE_H
 
-#include "academicevent.h"
-#include <list>
+#define WEEKS_IN_SCHEDULE 4
+#define WORKDAYS_IN_SCHEDULE 6
 
-class Schedule {
-private:
-    static const int WEEKS_COUNT = 4;
-    static const int DAYS_PER_WEEK = 6;
-    std::list<AcademicEvent*> schedule[WEEKS_COUNT][DAYS_PER_WEEK];
+#include<list>
+
+#include"lesson.h"
+#include"eventdate.h"
+
+class Schedule
+{
+protected:
+    EventDate lessonsStart;
+    EventDate lessonsEnd;
+    std::list<Lesson> lessons[WEEKS_IN_SCHEDULE][WORKDAYS_IN_SCHEDULE];
 
 public:
-    void addLesson(int week, int day, AcademicEvent* lesson);
-    void removeLesson(int week, int day, AcademicEvent* lesson);
-    const std::list<AcademicEvent*>& getLessons(int week, int day) const;
-    void clearDay(int week, int day);
-    bool hasLessons(int week, int day) const;
+    Schedule(EventDate start={0,0,0}, EventDate end={0,0,0}) :
+        lessonsStart(start), lessonsEnd(end)
+    {}
+
+    // Геттеры
+    const EventDate& getLessonsStart() const;
+    const EventDate& getLessonsEnd() const;
+    const std::list<Lesson>& getLessons(int week, int day) const;
+    std::list<Lesson>& getLessons(int week, int day);
+
+    // Сеттеры
+    void setLessonsStart(const EventDate& start);
+    void setLessonsEnd(const EventDate& end);
+    void setLessons(int week, int day, const std::list<Lesson>& lessonsList);
 };
 
-#endif
+#endif // SCHEDULE_H

@@ -1,0 +1,269 @@
+@startuml
+
+' Базовые классы исключений
+class BaseException {
+  - index: int
+  - description: char[EXCEPTION_LENGTH_MAX + 1]
+  + BaseException(id: int, str: const char*)
+  + BaseException(src: const BaseException&)
+}
+
+class FileException  {
+  + FileException(id: int, str: const char*)
+  + FileException(src: const FileException&)
+  + friend operator<<(os: ostream&, exc: FileException&)
+}
+
+class InputException {
+  + InputException(id: int, str: const char*)
+  + InputException(src: const InputException&)
+  + friend operator<<(os: ostream&, exc: InputException&)
+}
+
+' Классы времени и даты
+class EventTime {
+  - hour: unsigned
+  - minute: unsigned
+  + EventTime(h: unsigned, m: unsigned)
+  + getHour(): unsigned
+  + getMinute(): unsigned
+  + setHour(h: unsigned): void
+  + setMinute(m: unsigned): void
+  + friend operator<<(os: ostream&, t: const EventTime&)
+}
+
+class EventDate {
+  - monthDay: int
+  - month: int
+  - year: int
+  + EventDate(d: int, m: int, y: int)
+  + getDay(): unsigned
+  + getMonth(): unsigned
+  + getYear(): unsigned
+  + setDay(d: unsigned): void
+  + setMonth(m: unsigned): void
+  + setYear(y: unsigned): void
+  + friend operator<<(os: ostream&, t: const EventDate&)
+}
+
+class EventDateTime{
+  + EventDateTime(h: int, m: int, d: int, mon: int, y: int)
+}
+
+' Учебные предметы и дисциплины
+class Subject {
+  # subjectId: int
+  # abbreviation: string
+  # fullName: string
+  + Subject(id: int, abbr: const string&, name: const string&)
+  + getSubjectId(): int
+  + getAbbreviation(): const string&
+  + getFullName(): const string&
+  + setSubjectId(id: int): void
+  + getAbbreviation(abbr: const string&): void
+  + getFullName(name: const string&): void
+}
+
+class Discipline {
+  # semester: int
+  # hours: int
+  # assessmentType: Assessment
+  + Discipline(id: int, abbr: const string&, name: const string&, sem: int, h: int, type: Assessment)
+  + getSemester(): int
+  + getHours(): int
+  + getAssessmentType(): Assessment
+  + setSemester(sem: int): void
+  + setHours(h: int): void
+  + setAssessmentType(type: Assessment): void
+}
+
+class Lesson {
+  - startTime: EventTime
+  - endTime: EventTime
+  - teacherId: int
+  + Lesson(id: int, abbr: const string&, name: const string&, start: EventTime, end: EventTime, teachId: int)
+}
+
+' Оценки и экзамены
+class Grade {
+  # subjectId: int
+  # studentId: int
+  # teacherId: int
+  # grade: int
+  # dateTime: EventDateTime
+  + Grade(subjId: int, studId: int, teachId: int, gr: int, dt: EventDateTime)
+  + getStudentId(): int
+  + getGrade(): int
+  + getEventDateTime(): EventDateTime
+  + setStudentId(id: int): void
+  + setGrade(gr: int): void
+  + setEventDateTime(dt: const EventDateTime&): void
+}
+
+class Exam {
+  + Exam(subjId: int, abbr: const string&, name: const string&, sem: int, h: int, type: Assessment, studId: int, teachId: int, gr: int, dt: EventDateTime)
+}
+
+' Персоналии
+class Person {
+  # lastName: string
+  # firstName: string
+  # middleName: string
+  + Person(last: string, first: string, middle: string)
+  + getFirstName(): string
+  + getLastName(): string
+  + getMiddleName(): string
+  + setFirstName(first: const string&): void
+  + setLastName(last: const string&): void
+  + setMiddleName(middle: const string&): void
+}
+
+class Employee {
+  # position: string
+  + Employee(lName: string, fName: string, mName: string, pos: string)
+  + getPosition(): string
+  + setPosition(pos: const string&): void
+}
+
+class Student  {
+  # groupNumber: int
+  # studentId: int
+  # recordsTranscript: set<Discipline>
+  + Student(fName: string, mName: string, lName: string, group: int, id: int)
+  + getGroupNumber(): int
+  + getStudentId(): int
+  + setGroupNumber(group: int): void
+  + setStudentId(id: int): void
+}
+
+class Teacher {
+  # teacherId: int
+  # departmentId: int
+  # teacherSchedule: Schedule
+  + Teacher(teachId: int, depId: int)
+  + getTeacherId(): int
+  + setTeacherId(id: int): void
+}
+
+' Организационная структура
+class Schedule {
+  # lessonsStart: EventDate
+  # lessonsEnd: EventDate
+  + Schedule(start: EventDate, end: EventDate)
+}
+
+class Group {
+  - groupNumber: int
+  - students: map<int, Student>
+  - groupGrades: set<Grade>
+  - groupSchedule: Schedule
+  - facultyId: int
+  - majorId: int
+  - advisorId: int
+  - classRepId: int
+  - classViceRepId: int
+  + Group(num: int, fId: int, majId: int, advId: int, crId: int, cvrId: int)
+  + getGroupNumber(): int
+  + getFacultyId(): int
+  + getMajorId(): int
+  + getStudents(): const map<int, Student>&
+  + setGroupNumber(number: int): void
+  + setFacultyId(faculty: int): void
+  + setMajorId(major: const string&): void
+}
+
+class Major {
+  - majorId: int
+  - abbreviation: string
+  - fullName: string
+  - groups: map<int, Group>
+  + Major(id: int, abbr: string, name: string)
+}
+
+class Department {
+  - facultyId: int
+  - departmentId: int
+  - departmentHeadId: int
+  - abbreviation: string
+  - fullName: string
+  - majorProgramId: int
+  + Department(fId: int, dId: int, dHId: int, abbr: const string&, name: const string&, majProgId: int)
+  + getFacultyId(): int
+  + getDepartmentId(): int
+  + getDepartmentHeadId(): int
+  + getAbbreviation(): const string&
+  + getFullName(): const string&
+  + getMajorProgramId(): int
+  + setFacultyId(id: int): void
+  + setDepartmentId(id: int): void
+  + setDepartmentHeadId(id: int): void
+  + setAbbreviation(abbr: const string&): void
+  + setFullName(name: const string&): void
+  + setMajorProgramId(id: int): void
+  + friend operator>>(is: ifstream&, dp: Department&)
+  + friend operator<<(os: ofstream&, dp: Department&)
+}
+
+class Faculty {
+  - facultyId: int
+  - abbreviation: string
+  - fullName: string
+  - departments: map<int, Department>
+  - majors: map<int, Major>
+  + Faculty(id: int, abbr: string, name: string)
+  + getFacultyId(): int
+  + getAbbreviation(): const string&
+  + getFullName(): const string&
+  + getDepartments(): const map<int, Department>&
+  + getMajors(): const map<int, Major>&
+  + setFacultyId(id: int): void
+  + setAbbreviation(abbr: const string&): void
+  + setFullName(name: const string&): void
+  + friend operator>>(is: ifstream&, fc: Faculty&)
+  + friend operator<<(os: ofstream&, fc: Faculty&)
+}
+
+class University {
+  - faculties: map<int, Faculty>
+  - abbreviation: string
+  - fullName: string
+  - workingDirectory: filesystem::path
+  + University(abbr: string, name: string, path: string)
+  + getFaculties(): const map<int, Faculty>&
+  + getAbbreviation(): const string&
+  + getFullName(): const string&
+  + getWorkingDirectory(): const filesystem::path&
+  + addFaculty(src: const Faculty&): void
+  + friend operator>>(is: ifstream&, uni: University&)
+  + friend operator<<(os: ofstream&, uni: University&)
+}
+
+' Связи агрегации
+University  *--  Faculty
+Faculty  *--  Department
+Faculty  *--  Major
+Major  *--  Group
+Group  *--  Student
+Group  *--  Grade
+Department -- Teacher
+
+' Связи композиции
+Student *--  Discipline
+Teacher *-- Schedule
+Group *--  Schedule
+
+' Связи наследования
+FileException --|> BaseException
+InputException --|> BaseException
+EventDateTime --|> EventDate
+EventDateTime --|> EventTime
+Discipline --|> Subject
+Lesson --|> Subject
+Exam --|> Discipline
+Exam --|> Grade
+Employee --|> Person
+Student --|> Person
+Teacher --|> Employee
+MainWindow --|> QMainWindow
+
+@enduml

@@ -8,11 +8,16 @@ protected:
     std::string position;
     
 public:
+    Employee(std::string last="", std::string first="",
+             std::string middle="", std::string pos="") :
+        Person(last, first, middle), position(pos)
+    {}
+
     // Геттеры
-    virtual std::string getPosition() const;
+    std::string getPosition() const;
 
     // Сеттеры
-    virtual void setPosition(const std::string& pos);
+    void setPosition(const std::string& pos);
 };
 
 #endif

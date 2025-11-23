@@ -11,58 +11,63 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    baseexception.cpp \
+    department.cpp \
+    discipline.cpp \
+    eventdate.cpp \
+    eventdatetime.cpp \
+    eventtime.cpp \
+    exam.cpp \
+    examgrade.cpp \
     faculty.cpp \
+    fileexception.cpp \
+    inputexception.cpp \
+    interface.cpp \
+    lesson.cpp \
     main.cpp \
     mainwindow.cpp \
     \
+    major.cpp \
+    node.cpp \
     person.cpp \
     employee.cpp \
-    speciality.cpp \
+    schedule.cpp \
     student.cpp \
+    subject.cpp \
     teacher.cpp \
     \
     group.cpp \
     \
-    eventtime.cpp \
-    \
-    lesson.cpp \
-    \
-    academicevent.cpp \
-    campusevent.cpp \
-    \
-    schedule.cpp \
-    \
-    classroom.cpp \
-    \
     grade.cpp \
-    examgrade.cpp \
-    passfailgrade.cpp
+    tree.cpp
 
 HEADERS += \
+    baseexception.h \
+    department.h \
+    discipline.h \
+    eventdate.h \
+    eventdatetime.h \
+    eventtime.h \
+    exam.h \
+    examgrade.h \
     faculty.h \
+    fileexception.h \
+    inputexception.h \
+    interface.h \
+    lesson.h \
     mainwindow.h \
+    major.h \
+    node.h \
     person.h \
     employee.h \
-    speciality.h \
+    schedule.h \
     student.h \
+    subject.h \
     teacher.h \
     \
     group.h \
-    \
-    eventtime.h \
-    \
-    lesson.h \
-    \
-    academicevent.h \
-    campusevent.h \
-    \
-    schedule.h \
-    \
-    classroom.h \
-    \
     grade.h \
-    examgrade.h \
-    passfailgrade.h
+    tree.h
 
 
 FORMS +=

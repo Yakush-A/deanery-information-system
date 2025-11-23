@@ -1,25 +1,29 @@
 #ifndef EVENTTIME_H
 #define EVENTTIME_H
 
-#include <chrono>
+#include<iostream>
 
+// Базовый класс для времени
 class EventTime
 {
-private:
-    std::chrono::hours hours;
-    std::chrono::minutes minutes;
+protected:
+    unsigned hour, minute;
 
 public:
-    EventTime(int h, int m) :
-        hours(h), minutes(m)
+    EventTime(unsigned h=0, unsigned m=0) :
+        hour(h), minute(m)
     {}
 
-    virtual int getHours() const;
-    virtual int getMinutes() const;
+    //геттеры
+    inline unsigned getHour();
+    inline unsigned getMinute();
 
-    virtual void setTime(int h, int m);
+    //сеттеры
+    inline void setHour(unsigned h);
+    inline void setMinute(unsigned m);
 
+    friend std::ostream& operator << (std::ostream& os, const EventTime& t);
+    friend std::istream& operator >> (std::istream& is, EventTime& t);
 };
 
-
-#endif
+#endif // EVENTTIME_H

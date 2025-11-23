@@ -1,34 +1,32 @@
 #ifndef LESSON_H
 #define LESSON_H
 
-#include "academicevent.h"
-#include "eventtime.h"
-#include "classroom.h"
-#include "group.h"
-#include "teacher.h"
+#include"eventtime.h"
+#include"subject.h"
 
-#include <list>
-
-class Lesson : public AcademicEvent 
+class Lesson : public Subject
 {
-protected:
-    std::list<Group*> groups;
-    std::list<Teacher*> teachers;
-
-    Classroom* classroom;
-    std::string subject;
+    EventTime startTime;
+    EventTime endTime;
+    int teacherId;
 
 public:
-    virtual const std::list<Group*>& getGroups() const;
-    virtual const std::list<Teacher*>& getTeachers() const;
-    virtual EventTime* getStartTime() const;
-    virtual EventTime* getEndTime() const;
-    virtual Classroom* getClassroom() const;
-    virtual std::string getSubject() const;
-    virtual void setStartTime(EventTime* start);
-    virtual void setEndTime(EventTime* end);
-    virtual void setClassroom(Classroom* room);
-    virtual void setSubject(const std::string& subj);
+    Lesson(int id=0, const std::string& abbr="", const std::string& name="",
+           EventTime start = {0, 0}, EventTime end = {0, 0}, int teachId=0) :
+        Subject(id, abbr, name), startTime(start), endTime(end), teacherId(teachId)
+    {}
+
+
+    // Геттеры
+    const EventTime& getStartTime() const;
+    const EventTime& getEndTime() const;
+    int getTeacherId() const;
+
+    // Сеттеры
+    void setStartTime(const EventTime& start);
+    void setEndTime(const EventTime& end);
+    void setTeacherId(int id);
+
 };
 
-#endif
+#endif // LESSON_H

@@ -1,31 +1,37 @@
 #ifndef GRADE_H
 #define GRADE_H
 
-#include "eventtime.h"
-#include <string>
+#include<fstream>
 
-// Уровень 1: Базовый класс для оценок
-class Grade 
+#include "eventdatetime.h"
+
+class Grade
 {
 protected:
+    int subjectId;
     int studentId;
+    int teacherId;
     int grade;
-    
-    EventTime classTime;
-    std::string subject;
+    EventDateTime dateTime;
 
 public:
+    Grade(int subjId=0, int studId=0, int teachId=0,
+          int gr=0, EventDateTime dt={0,0,0,0,0}) :
+        subjectId(subjId), studentId(studId), teacherId(teachId),
+        grade(gr), dateTime(dt)
+    {}
+
+
     virtual int getStudentId() const;
     virtual int getGrade() const;
-
-    virtual EventTime getEventTime() const;
-    virtual std::string getSubject() const;
+    virtual EventDateTime getEventDateTime() const;
 
     virtual void setStudentId(int id);
     virtual void setGrade(int gr);
+    virtual void setEventDateTime(const EventDateTime& dt);
 
-    virtual void setEventTime(EventTime* time);
-    virtual void setSubject(const std::string& subj);
+    friend std::ifstream& operator >> (std::ifstream& is, Grade& gr);
+    friend std::ofstream& operator << (std::ofstream& os, Grade& gr);
 };
 
 #endif

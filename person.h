@@ -6,14 +6,14 @@
 class Person 
 {
 protected:
-    std::string firstName;
     std::string lastName;
+    std::string firstName;
     std::string middleName;
 
 public:
     Person(
-        std::string first, std::string last, std::string middle) :
-        firstName(first), lastName(last), middleName(middle)
+        std::string last = "Иванов", std::string first = "Иван", std::string middle = "Иванович") :
+        lastName(last), firstName(first), middleName(middle)
     {}
 
 
